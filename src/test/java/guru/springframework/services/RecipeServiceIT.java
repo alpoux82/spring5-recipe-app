@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -28,6 +30,7 @@ public class RecipeServiceIT {
     @Autowired
     RecipeCommandToRecipe recipeCommandToRecipe;
 
+    @Transactional
     @Test
     public void testSaveDescription() {
         //given
@@ -39,9 +42,8 @@ public class RecipeServiceIT {
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand);
         //then
         assertEquals(testRecipe.getId(), savedRecipeCommand.getId());
-        assertEquals(NEW_DESCRIPTION, savedRecipeCommand.getDescription());
-        assertEquals(testRecipe.getCategories().size(), testRecipeCommand.getCategories().size());
-        assertEquals(testRecipe.getIngredients().size(), testRecipeCommand.getIngredients().size());
+        assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.getCategories().size());
+        assertEquals(testRecipe.getIngredients().size(), savedRecipeCommand.getIngredients().size());
     }
 
 }
